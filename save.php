@@ -15,6 +15,4 @@ if(!defined('WB_PATH')) {
         throw new IllegalFileException();
 }
 
-?>
-
-test
+?> 
