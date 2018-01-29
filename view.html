@@ -1,0 +1,140 @@
+<style>
+    .tab_bodies > form:nth-child(n+2) {
+        display: none
+    }
+    .tab_bodies > form {
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+    }
+    .tab_headers > .tab_header_active {
+        background: #dddddd;
+    }
+    .tab_headers > span {
+        cursor: pointer;
+    }
+    
+    #tab_login tr > td:nth-child(1), #tab_reg tr > td:nth-child(1), #tab_repair tr > td:nth-child(1) {
+        text-align: right;
+    }
+    #tab_login td, #tab_reg td , #tab_repair td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="tab_headers">
+    <span data-name="login">Войти</span>
+    <span data-name="reg">Зарегистрироваться</span>
+    <span data-name="repair">Восстановить пароль</span>
+</div>
+
+<div class="tab_bodies">
+
+    <form id="tab_login">
+        {{ message }}
+
+    	<input type="hidden" name="username_fieldname" value="{{ app.username_fieldname }}" />
+    	<input type="hidden" name="password_fieldname" value="{{ app.password_fieldname }}" />
+
+        <table class="adaptive_table">
+            <tr>
+                <td>Логин:</td>
+                <td> <input type="text" value="" name="{{ app.username_fieldname }}" maxlength="{{ app.max_username_len }}"> </td>
+            </tr><tr>
+                <td>Пароль:</td>
+                <td> <input type="password" value="" name="{{ app.password_fieldname }}" maxlength="{{ app.max_password_len }}"> </td>
+            </tr><tr>
+                <td > <input type="checkbox" name="remember" value="true" /> </td>
+                <td> Запомнить меня </td>
+            </tr><tr>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Войти" onclick="sendform(this, 'login', {url:WB_URL+'/modules/wbs_auth/api.php', func_after_success: function() {/*window.location='';*/}})"> </td>
+            </tr>
+        </table>
+    </form>
+
+    <form id="tab_reg">
+
+        <input type="hidden" name="username_fieldname" value="{{ app.username_fieldname }}" style="width:97%;" />
+
+        <table class="adaptive_table">
+           <tr>
+                <td>Имя:</td>
+                <td> <input type="text" name="name" value=""> </td>
+            </tr><tr>
+                <td>Фамилия:</td>
+                <td> <input type="text" name="surname" value=""> </td>
+            </tr><tr>
+                <td>Логин:</td>
+                <td> <input type="text" name="{{ app.username_fieldname }}" value="" maxlength="30"> </td>
+            </tr><tr>
+                <td>Пароль:</td>
+                <td> <input type="password" name="password" value="" maxlength="30"> </td>
+            </tr><tr>
+                <td>Повторите пароль:</td>
+                <td> <input type="password" name="password2" value="" maxlength="30"> </td>
+            </tr><tr>
+                <td>E-mail:</td>
+                <td> <input type="email" name="email" value=""> </td>
+            </tr><tr>
+                <td> <input type='checkbox' name='is_send_password'> </td>
+                <td> <label name="is_send_password"> выслать пароль мне на почту </label> </td>
+            </tr><tr>
+                <td> <input type='checkbox' name='accept'> </td>
+                <td> <label name="accept"> ознакомлен с <a href="javascript:W.open_by_api('get_accept_text', {max_count:1});">Соглашением об использовании Интернет-портала «инфо-рф.рф» </a> </label> </td>
+            </tr><tr>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Зарегистрироваться" onclick="sendform(sendform(this, 'reg', {url:WB_URL+'/modules/wbs_auth/api.php'}))"> </td>
+            </tr>
+        </table>
+    </form>
+
+    <form id="tab_repair">
+        <table class="adaptive_table">
+           <tr>
+                <td>Ваш e-mail:</td>
+                <td> <input type="email" name="email" value="{{ repair_email }}"> </td>
+            </tr><tr>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Восстановить" onclick="sendform(sendform(this, 'forgot', {url:WB_URL+'/modules/wbs_auth/api.php'}))"> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    "use strict";
+    
+    class Tabs2 {
+        constructor(headers, bodies) {
+            this.headers = headers;
+
+            this.cur_header = this.headers.children.length > 0 ? this.headers.children[0] : null;
+            if (this.cur_header) this.cur_header.classList.add('tab_header_active')
+
+            this.ev_header_click = this.ev_header_click.bind(this);
+            
+            for (let header of this.headers.children) {
+                header.addEventListener("click", this.ev_header_click);
+            }
+        }
+        
+        ev_header_click(e) {
+            let body, header = e.target;
+
+            if (this.cur_header) {
+                body = document.getElementById("tab_"+this.cur_header.dataset.name)
+                body.style.display = "none";
+                this.cur_header.classList.remove('tab_header_active')
+            }
+
+            this.cur_header = header;
+
+            body = document.getElementById("tab_"+this.cur_header.dataset.name)
+            body.style.display = "block";
+            this.cur_header.classList.add('tab_header_active')
+            
+        }
+        
+    }
+
+   let tab = new Tabs2(document.querySelector('.tab_headers'), document.querySelector('.tab_bodies'));
+
+    //$('.tab_headers').children().click(function());
+</script>

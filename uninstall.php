@@ -15,4 +15,11 @@ if(!defined('WB_PATH')) {
         throw new IllegalFileException();
 }
 
+include(__DIR__.'/lib.class.auth.php');
+$clsModAuth = new ModAuth(null, null);
+$r = $clsModAuth->uninstall();
+if ($r !== true) {
+    $admin->print_error($r);
+}
+
 ?>

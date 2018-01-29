@@ -15,4 +15,12 @@ if(!defined('WB_PATH')) {
         throw new IllegalFileException();
 }
 
+// create tables from sql dump file
+if (is_readable(__DIR__.'/install-struct.sql')) {
+    $r = $database->SqlImport(__DIR__.'/install-data.sql', TABLE_PREFIX, __FILE__ );
+    if ($database->is_error()) {
+        $admin->print_error($database->get_error());
+    }
+}
+
 ?>
