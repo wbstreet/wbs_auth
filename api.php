@@ -85,7 +85,9 @@ if ($action == "login") { // совпадает с action, требуемым к
 	$surname = $clsFilter->f('surname', [['1', 'Не указана фамилия!']], 'append');
 	$additional_info = $_POST['is_send_password'] == 'true' ? "Пароль: $password</span><br>" : '';
 
-    if ($clsFilter->is_error()) $clsFilter->print_error();
+        $clsFilter->f('captcha', [['1', "Введите Защитный код!"], ['variants', "Введите Защитный код!", [$_SESSION['captcha']]]], 'append', '');
+	
+        if ($clsFilter->is_error()) $clsFilter->print_error();
 
 	if (!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)) { $clsFilter->add_error($MESSAGE['USERS_NAME_INVALID_CHARS'].' / '. $MESSAGE['USERS_USERNAME_TOO_SHORT']);
 	} else if (strlen($password) < 2) { $clsFilter->add_error($MESSAGE['USERS']['PASSWORD_TOO_SHORT'], 'password');
@@ -101,7 +103,8 @@ if ($action == "login") { // совпадает с action, требуемым к
 } else if ($action == "repair") {
 
 	$email = $clsFilter->f('email', [['1', 'Укажите e-mail!']], 'append');;
-    if ($clsFilter->is_error()) $clsFilter->print_error();
+        $clsFilter->f('captcha', [['1', "Введите Защитный код!"], ['variants', "Введите Защитный код!", [$_SESSION['captcha']]]], 'append', '');
+	if ($clsFilter->is_error()) $clsFilter->print_error();
 
    	$r = $clsModAuth->repair_password($email);
    	if ($r !== true) print_error($r);

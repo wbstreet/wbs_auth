@@ -80,8 +80,14 @@
             </tr><tr>
                 <td> <input type='checkbox' name='accept'> </td>
                 <td> <label name="accept"> ознакомлен с <a href="javascript:W.open_by_api('get_accept_text', {max_count:1});">Соглашением об использовании Интернет-портала «инфо-рф.рф» </a> </label> </td>
-            </tr><tr>
-                <td colspan="2" style="text-align:left;"> <input type="button" value="Зарегистрироваться" onclick="sendform(sendform(this, 'reg', {url:WB_URL+'/modules/wbs_auth/api.php'}))"> </td>
+
+            <tr class="captcha">
+                <td width="20%"><span style="text-align: right;">Защита от спама:</span></td>
+                <td class='captcha'>[[captcha?part=image]] = [[captcha?part=input]]</td>
+            </tr>
+                
+           </tr><tr>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Зарегистрироваться" onclick="sendform(sendform(this, 'reg', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')}))"> </td>
             </tr>
         </table>
     </form>
@@ -91,8 +97,15 @@
            <tr>
                 <td>Ваш e-mail:</td>
                 <td> <input type="email" name="email" value="{{ repair_email }}"> </td>
-            </tr><tr>
-                <td colspan="2" style="text-align:left;"> <input type="button" value="Восстановить" onclick="sendform(sendform(this, 'forgot', {url:WB_URL+'/modules/wbs_auth/api.php'}))"> </td>
+            </tr>
+            
+            <tr class="captcha">
+                <td width="20%"><span style="text-align: right;">Защита от спама:</span></td>
+                <td class='captcha'>[[captcha?part=image]] = [[captcha?part=input]]</td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Восстановить" onclick="sendform(sendform(this, 'repair', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')}))"> </td>
             </tr>
         </table>
     </form>
