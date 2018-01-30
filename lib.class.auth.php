@@ -9,6 +9,7 @@ class ModAuth extends Addon {
 
     function __construct($page_id, $section_id) {
         parent::__construct('auth', $page_id, $section_id);
+        $this->tbl_auth = "`".TABLE_PREFIX."mod_wbs_auth`";
     }
     
     function uninstall() {
