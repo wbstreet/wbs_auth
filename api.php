@@ -125,8 +125,8 @@ if ($action == "login") { // совпадает с action, требуемым к
     $r = update_row($clsModAuth->tbl_auth, $fields, '`settings_id`=1');
     if ($r !== true) print_error($r);
 
-    print_success("Сохранено!");
+    print_success($MESSAGE['SETTINGS_SAVED']."!");
 
-} else { print_error("Неверный api name!"); }
+} else { print_error("Wrong api name!"); }
 
 ?>
