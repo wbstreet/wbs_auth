@@ -6,3 +6,14 @@ CREATE TABLE `{TABLE_PREFIX}mod_wbs_auth` (
   `use_smart_login` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`settings_id`)
 ){TABLE_ENGINE=MyISAM};
+
+ALTER TABLE `{TABLE_PREFIX}users`
+  ADD `name` varchar(255) NOT NULL DEFAULT '';
+ALTER TABLE `{TABLE_PREFIX}users`
+  ADD `surname` varchar(255) NOT NULL DEFAULT '';
+ALTER TABLE `{TABLE_PREFIX}users`
+  ADD `confirm_reg` varchar(255) NOT NULL DEFAULT '1';
+ALTER TABLE `{TABLE_PREFIX}users`
+  ADD `confirm_repair` varchar(255) NOT NULL DEFAULT '';
+ALTER TABLE `{TABLE_PREFIX}users`
+  ADD `new_password` varchar(255) NOT NULL DEFAULT '';

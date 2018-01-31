@@ -68,7 +68,7 @@ class ModAuth extends Addon {
     	$md5_password = md5($password);
     	$confirm_email_code = $this->create_confirm_email_code($username, $name);
     	// Inser the user into the database
-    	$query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,home_folder,email,timezone, language,name,surname,confirm_email) VALUES ('$group_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$home_folder','$email','-72000', '$default_language', '$name', '$surname', '$confirm_email_code')";
+    	$query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,home_folder,email,timezone, language,name,surname,confirm_reg) VALUES ('$group_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$home_folder','$email','-72000', '$default_language', '$name', '$surname', '$confirm_email_code')";
     	$database->query($query);
     	if($database->is_error()) {
     		return $database->get_error();

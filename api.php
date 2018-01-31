@@ -21,13 +21,13 @@ if (isset($_GET['action'])) {
         </head>
         <body>";
     
-        $sql = "SELECT * FROM `".TABLE_PREFIX."users` WHERE `confirm_email`='$code'";
+        $sql = "SELECT * FROM `".TABLE_PREFIX."users` WHERE `confirm_reg`='$code'";
         $result = $database->query($sql);
         if ($database->is_error()) echo $database->get_error();
         else if ($result->numRows() == 0) echo "Пользователь не найден: возможно, email был подтверждён ранее.";
         else {
                 $user = $result->fetchRow();
-                $database->query("UPDATE `".TABLE_PREFIX."users` SET `confirm_email`='1' WHERE `confirm_email`='$code'");
+                $database->query("UPDATE `".TABLE_PREFIX."users` SET `confirm_reg`='1' WHERE `confirm_reg`='$code'");
         
                 echo "Email успешно подтверждён. Теперь Вы можете использовать Ваши логин и пароль для входа в личный кабинет.";
         }
@@ -107,6 +107,8 @@ if ($action == "login") { // совпадает с action, требуемым к
     if ($admin->is_authenticated()) print_error("Вы уже вошли на сайт!");
 
     $email = $clsFilter->f('email', [['1', 'Укажите e-mail!']], 'append');
+    $password = $clsFilter->f('password', [['1', 'Укажите пароль!']], 'append');
+    $password2 = $clsFilter->f('password2', [['1', 'Повторите пароль!']], 'append');
     $clsFilter->f('captcha', [['1', "Введите Защитный код!"], ['variants', "Введите Защитный код!", [$_SESSION['captcha']]]], 'append', '');
     if ($clsFilter->is_error()) $clsFilter->print_error();
 
