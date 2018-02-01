@@ -27,7 +27,8 @@ if (isset($_GET['action'])) {
         else if ($result->numRows() == 0) echo "Пользователь не найден: возможно, email был подтверждён ранее.";
         else {
                 $user = $result->fetchRow();
-                $database->query("UPDATE `".TABLE_PREFIX."users` SET `confirm_reg`='1' WHERE `confirm_reg`='$code'");
+                if ($database->is_error() && $r === false) echo $database->get_error();
+                else $database->query("UPDATE `".TABLE_PREFIX."users` SET `confirm_reg`='1' WHERE `confirm_reg`='$code'");
         
                 echo "Email успешно подтверждён. Теперь Вы можете использовать Ваши логин и пароль для входа в личный кабинет.";
         }
@@ -43,8 +44,29 @@ if (isset($_GET['action'])) {
 
     } else if ($action == "confirm_repair") {
         
-        
-
+        $code = preg_replace("/[^A-F0-9]+/", '', $_GET['code']);
+    
+        echo "<!doctype html><html>
+        <head>
+            <meta charset='utf-8'>
+            <title>Подтверждение регистрации</title>
+        </head>
+        <body>";
+    
+        $sql = "SELECT * FROM `".TABLE_PREFIX."users` WHERE `confirm_repair`='$code'";
+        $result = $database->query($sql);
+        if ($database->is_error()) echo $database->get_error();
+        else if ($result->numRows() == 0) echo "Код подтверждения не найден.";
+        else {
+            $user = $result->fetchRow();
+            $r = $database->query("UPDATE `".TABLE_PREFIX."users` SET `confirm_repair`='', `new_password`='', `password`='{$user['new_password']}' WHERE `confirm_repair`='$code'");
+            if ($database->is_error() && $r === false) echo $database->get_error();
+            else echo "Пароль успешно изменён. Теперь Вы можете использовать Ваши логин и новый пароль для входа в личный кабинет.";
+        }
+        echo "<br><br><a href='".WB_URL."'>На главную</a>";
+                
+        echo "</body>
+        </html>";
     }
     die();
 }
@@ -108,14 +130,14 @@ if ($action == "login") { // совпадает с action, требуемым к
 
     $email = $clsFilter->f('email', [['1', 'Укажите e-mail!']], 'append');
     $password = $clsFilter->f('password', [['1', 'Укажите пароль!']], 'append');
-    $password2 = $clsFilter->f('password2', [['1', 'Повторите пароль!']], 'append');
+    $password2 = $clsFilter->f('password2', [['1', 'Повторите пароль!'], ['variants', 'Пароли должны совпадать!', [$password]]], 'append');
     $clsFilter->f('captcha', [['1', "Введите Защитный код!"], ['variants', "Введите Защитный код!", [$_SESSION['captcha']]]], 'append', '');
     if ($clsFilter->is_error()) $clsFilter->print_error();
 
-    $r = $clsModAuth->repair_password($email);
+    $r = $clsModAuth->repair_password($email, $password);
     if ($r !== true) print_error($r);
 
-    print_success('Новый пароль выслан на Ваш Email');
+    print_success('На Ваш Email выслано письмо с подтверждением.');
 
 } else if ($action == "save") {
 

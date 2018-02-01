@@ -27,13 +27,12 @@ class ModAuth extends Addon {
     function send_confirm_email($confirm_email_code, $email, $username, $name, $surname, $additional_info='') {
     	global $clsEmail;
         return $clsEmail->send_template($email, 'success_registration', [
-            'confirm_email_code'=>$confirm_email_code,
             'username'=>$username,
             'name'=>$name,
             'surname'=>$surname,
             'email'=>$email,
             'additional_info'=>$additional_info,
-            'wb_url'=>WB_URL
+            'wb_url'=>idn_decode(WB_URL)[0]."/modules/wbs_auth/api.php?action=confirm_email&code=".$confirm_email_code
         ]);
     }
     
@@ -150,6 +149,45 @@ class ModAuth extends Addon {
     	}
     	return true;
     }
+
+    function repair_password($email, $new_password) {
+        global $database, $MESSAGE, $clsEmail;
+        // Check if the email exists in the database
+        $query = "SELECT user_id,username,display_name,email,last_reset,password FROM ".TABLE_PREFIX."users WHERE email = '".$database->escapeString($email)."'";
+        $results = $database->query($query);
+        if($results->numRows() == 0) return $MESSAGE['FORGOT_PASS']['EMAIL_NOT_FOUND'];
+        $results_array = $results->fetchRow();
+        
+        // Check if the password has been reset in the last 2 hours
+        $last_reset = $results_array['last_reset'];
+        $time_diff = time()-$last_reset; // Time since last reset in seconds
+        $time_diff = $time_diff/60/60; // Time since last reset in hours
+        //if($time_diff < 2) return $MESSAGE['FORGOT_PASS']['ALREADY_RESET'];
+
+        $confirm_code = $this->create_confirm_email_code($results_array['user_id'], $name);
+    
+        $database->query("UPDATE ".TABLE_PREFIX."users SET new_password = '".md5($new_password)."', last_reset = '".time()."', `confirm_repair`='{$confirm_code}' WHERE user_id = '".$results_array['user_id']."'");
+        if($database->is_error()) return $database->get_error();
+    
+        list($r, $letter_id) = $clsEmail->send_template($email, 'repair_password', [
+            'name'=>$name,
+            'surname'=>$surname,
+            'email'=>$email,
+            'url'=>idn_decode(WB_URL)[0]."/modules/wbs_auth/api.php?action=confirm_repair&code=".$confirm_code
+        ]);
+        if ($r !== true) {
+            $database->query("UPDATE ".TABLE_PREFIX."users SET new_password='', confirm_repair='' WHERE user_id = '".$results_array['user_id']."'");
+                return 'Пароль не изменён. Не удалось отправить письмо: '.$r;
+        }
+        return true;
+    }
+    
 }
 }
 ?>
+
+<p>Здравствуйте, {{surname}} {{name}}!</p>
+
+<p>Для подтверждения смены пароля перейдите по ссылке: {{url}}</p>
+
+<p>Если Вы не запрашивали смену пароля, просто проигнрируйте это письмо.</p>
