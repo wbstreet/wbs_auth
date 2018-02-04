@@ -16,6 +16,8 @@ if(!defined('WB_PATH')) {
 }
 
 include(WB_PATH."/modules/wbs_core/include_all.php");
+require_once(WB_PATH.'/include/captcha/captcha.php');
+if(function_exists('wbs_core_include')) wbs_core_include(['functions.js', 'windows.js', 'windows.css', 'effects.css']);
 
 if (!$admin->is_authenticated()) {
 
