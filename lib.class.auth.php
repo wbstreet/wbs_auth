@@ -116,40 +116,6 @@ class ModAuth extends Addon {
     	session_destroy();
     }
     
-    function repair_password($email) {
-    	global $database, $MESSAGE, $clsEmail;
-    	// Check if the email exists in the database
-    	$query = "SELECT user_id,username,display_name,email,last_reset,password FROM ".TABLE_PREFIX."users WHERE email = '".mysql_escape_string($email)."'";
-    	$results = $database->query($query);
-    	if($results->numRows() == 0) return $MESSAGE['FORGOT_PASS']['EMAIL_NOT_FOUND'];
-    	$results_array = $results->fetchRow();
-    	
-    	// Check if the password has been reset in the last 2 hours
-    	$last_reset = $results_array['last_reset'];
-    	$time_diff = time()-$last_reset; // Time since last reset in seconds
-    	$time_diff = $time_diff/60/60; // Time since last reset in hours
-    	if($time_diff < 2) return $MESSAGE['FORGOT_PASS']['ALREADY_RESET'];
-    
-    	$new_pass = generate_image_name(7, 'both');
-    	
-    	$database->query("UPDATE ".TABLE_PREFIX."users SET password = '".md5($new_pass)."', last_reset = '".time()."' WHERE user_id = '".$results_array['user_id']."'");
-    	if($database->is_error()) return $database->get_error();
-    
-    	// Setup email to send
-    	$mail_to = htmlspecialchars($email,ENT_QUOTES);
-    
-        $vars = [
-        	'username'=>$results_array['username'],
-        	'password'=>$new_pass,
-        	];
-        list($r, $letter_id) = $clsEmail->send_template($mail_to, 'repair_password', $vars);
-        if ($r !== true) {
-            $database->query("UPDATE ".TABLE_PREFIX."users SET password = '".$results_array['password']."' WHERE user_id = '".$results_array['user_id']."'");
-        	return 'Пароль не изменён. Не удалось отправить письмо: '.$r;
-    	}
-    	return true;
-    }
-
     function repair_password($email, $new_password) {
         global $database, $MESSAGE, $clsEmail;
         // Check if the email exists in the database
@@ -185,9 +151,3 @@ class ModAuth extends Addon {
 }
 }
 ?>
-
-<p>Здравствуйте, {{surname}} {{name}}!</p>
-
-<p>Для подтверждения смены пароля перейдите по ссылке: {{url}}</p>
-
-<p>Если Вы не запрашивали смену пароля, просто проигнрируйте это письмо.</p>
