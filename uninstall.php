@@ -18,7 +18,7 @@ if(!defined('WB_PATH')) {
 include(__DIR__.'/lib.class.auth.php');
 $clsModAuth = new ModAuth(null, null);
 $r = $clsModAuth->uninstall();
-if ($r !== true) {
+if (gettype($r) === 'string') {
     $admin->print_error($r);
 }
 
