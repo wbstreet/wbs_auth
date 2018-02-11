@@ -22,12 +22,12 @@ include(__DIR__."/lib.class.$name.php");
 $GLOBALS['cls'.$class_name] = new $class_name(null, null);
 
 $r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE, 'struct');
-if ($r !== true) $admin->print_error($r);
+if (gettype($r) === 'string') $admin->print_error($r);
 
 $r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE, 'data');
-if ($r !== true) $admin->print_error($r);
+if (gettype($r) === 'string') $admin->print_error($r);
 
 $r = $GLOBALS['cls'.$class_name]->install();
-if ($r !== true) $admin->print_error($r);
+if (gettype($r) === 'string') $admin->print_error($r);
 
 ?>
