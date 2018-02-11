@@ -21,10 +21,10 @@ $class_name = "Mod".ucfirst(str_replace('_', '', ucwords($name, '_'))); // porta
 include(__DIR__."/lib.class.$name.php");
 $GLOBALS['cls'.$class_name] = new $class_name(null, null);
 
-$r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE, 'struct');
+$r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE__, 'struct');
 if (gettype($r) === 'string') $admin->print_error($r);
 
-$r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE, 'data');
+$r = $GLOBALS['cls'.$class_name]->_import_sql(__FILE__, 'data');
 if (gettype($r) === 'string') $admin->print_error($r);
 
 $r = $GLOBALS['cls'.$class_name]->install();
