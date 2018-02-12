@@ -142,7 +142,8 @@ if ($action == "login") { // совпадает с action, требуемым к
 } else if ($action == "save") {
 
     $fields = [
-        'user_group' => $clsFilter->f('user_group', [['integer', 'Укажите группу пользователей!']], 'append')
+        'user_group' => $clsFilter->f('user_group', [['integer', 'Укажите группу пользователей!']], 'append'),
+        'message_authed' => $clsFilter->f('message_authed', [['1', 'укажите сообщение!']], 'append')
     ];
     if ($clsFilter->is_error()) $clsFilter->print_error();
     

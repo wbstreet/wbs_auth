@@ -32,6 +32,12 @@ if(function_exists('wbs_core_include')) wbs_core_include(['functions.js', 'windo
             <td>В какую группу будут входить зарегистрированные пользователи?</td>
             <td><input type="text" name="user_group" value="<?php echo $settings !== null ? $settings['user_group'] : ''; ?>"></td>
         </tr>
+        <tr>
+            <td colspan="2">Сообщение для авторизованных пользователей вместо формы:</td>
+        </tr>
+        <tr>
+            <td colspan="2"><textarea style="width:100%;" name="message_authed"><?php echo $settings !== null ? $settings['message_authed'] : ''; ?></textarea></td>
+        </tr>
     </table>
 
     <input type="button" value="Сохранить" onclick="sendform(this, 'save', {url: WB_URL+'/modules/wbs_auth/api.php'});">
