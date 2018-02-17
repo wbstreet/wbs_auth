@@ -93,9 +93,14 @@ if ($action == "login") { // совпадает с action, требуемым к
 
     if ($admin->is_authenticated()) print_error('Вы уже зарегистрированы!');
 
-    $clsFilter->f('accept', [['variants', 'Для регистрации необходимо согласиться с соглашением!', ['true']]]);
+    $clsFilter->f('accept', [['variants', 'Для регистрации необходимо согласиться с соглашением!', ['true']]], 'fatal');
 
-    $groups_id = "1";
+    $settings = $database->query("SELECT * FROM {$clsModAuth->tbl_auth} WHERE `settings_id`=1");
+    if ($database->is_error()) { print_error($database->get_error()); }
+    else if ($settings->numRows() === 0) { print_error("Настройки не найдены!"); }
+    else $settings = $settings->fetchRow();
+
+    $groups_id = $settings['user_group'];
     $active = "1";
     $username_fieldname = $admin->get_post_escaped('username_fieldname');
     $username = strtolower($clsFilter->f($username_fieldname, [['1', 'Укажите login!']], 'append'));

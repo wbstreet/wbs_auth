@@ -32,7 +32,7 @@ class ModAuth extends Addon {
             'surname'=>$surname,
             'email'=>$email,
             'additional_info'=>$additional_info,
-            'wb_url'=>idn_decode(WB_URL)[0]."/modules/wbs_auth/api.php?action=confirm_email&code=".$confirm_email_code
+            'url'=>idn_decode(WB_URL)[0]."/modules/wbs_auth/api.php?action=confirm_email&code=".$confirm_email_code
         ]);
     }
     
