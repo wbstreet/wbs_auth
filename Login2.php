@@ -173,6 +173,7 @@ class Login extends admin {
                     $aUser['password'] == $this->password &&
                     $aUser['active'] == 1
                 ) {
+                    if ($aUser['confirm_reg'] !== '1') { $this->message = 'Вы должны подтвердить свой e-mail'; return false; }
                 // valide authentcation !!
                     $user_id                   = $aUser['user_id'];
                     $this->user_id             = $user_id;

@@ -147,6 +147,16 @@ class ModAuth extends Addon {
         }
         return true;
     }
+
+    function is_email_confirmed($user_id) {
+        global $database;
+        $sql = "SELECT * FROM `".TABLE_PREFIX."users` WHERE `user_id`='$user_id'";
+        $result = $database->query($sql);
+        if($database->is_error()) {$database->get_error(); return false;}
+        if ($result->numRows() == 0) return false;
+        if ($result->fetchRow()['confirm_reg'] != '1') return false;
+        return true;
+    }
     
 }
 }
