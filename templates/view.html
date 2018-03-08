@@ -38,7 +38,7 @@
         <table class="adaptive_table">
             <tr>
                 <td>Логин:</td>
-                <td> <input type="text" value="" name="{{ app.username_fieldname }}" maxlength="{{ app.max_username_len }}"> </td>
+                <td> <input type="text" value="" name="{{ app.username_fieldname }}" maxlength="{{ app.max_username_len }}" autocomplete='username'> </td>
             </tr><tr>
                 <td>Пароль:</td>
                 <td> <input type="password" value="" name="{{ app.password_fieldname }}" maxlength="{{ app.max_password_len }}"> </td>
@@ -58,13 +58,13 @@
         <table class="adaptive_table">
            <tr>
                 <td>Имя:</td>
-                <td> <input type="text" name="name" value=""> </td>
+                <td> <input type="text" name="name" value="" autocomplete='name'> </td>
             </tr><tr>
                 <td>Фамилия:</td>
-                <td> <input type="text" name="surname" value=""> </td>
+                <td> <input type="text" name="surname" value="" autocomplete='surname'> </td>
             </tr><tr>
                 <td>Логин:</td>
-                <td> <input type="text" name="{{ app.username_fieldname }}" value="" maxlength="30"> </td>
+                <td> <input type="text" name="{{ app.username_fieldname }}" value="" maxlength="30" autocomplete='username'> </td>
             </tr><tr>
                 <td>Пароль:</td>
                 <td> <input type="password" name="password" value="" maxlength="30"> </td>
@@ -73,7 +73,7 @@
                 <td> <input type="password" name="password2" value="" maxlength="30"> </td>
             </tr><tr>
                 <td>E-mail:</td>
-                <td> <input type="email" name="email" value=""> </td>
+                <td> <input type="email" name="email" value="" autocomplete='email'> </td>
             </tr><tr>
                 <td> <input type='checkbox' name='is_send_password'> </td>
                 <td> <label name="is_send_password"> выслать пароль мне на почту </label> </td>
@@ -96,7 +96,7 @@
         <table class="adaptive_table">
            <tr>
                 <td>Ваш e-mail:</td>
-                <td> <input type="email" name="email" value="{{ repair_email }}"> </td>
+                <td> <input type="email" name="email" value="{{ repair_email }}" autocomplete='email'> </td>
             </tr><tr>
                 <td>Новый пароль:</td>
                 <td> <input type="password" name="password" value="" maxlength="30"> </td>
