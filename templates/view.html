@@ -41,7 +41,7 @@
                 <td> <input type="text" value="" name="{{ app.username_fieldname }}" maxlength="{{ app.max_username_len }}" autocomplete='username'> </td>
             </tr><tr>
                 <td>Пароль:</td>
-                <td> <input type="password" value="" name="{{ app.password_fieldname }}" maxlength="{{ app.max_password_len }}"> </td>
+                <td> <input type="password" value="" name="{{ app.password_fieldname }}" maxlength="{{ app.max_password_len }}" autocomplete="current-password"> </td>
             </tr><tr>
                 <td > <input type="checkbox" name="remember" value="true" /> </td>
                 <td> Запомнить меня </td>
@@ -67,10 +67,10 @@
                 <td> <input type="text" name="{{ app.username_fieldname }}" value="" maxlength="30" autocomplete='username'> </td>
             </tr><tr>
                 <td>Пароль:</td>
-                <td> <input type="password" name="password" value="" maxlength="30"> </td>
+                <td> <input type="password" name="password" value="" maxlength="30" autocomplete="new-password"> </td>
             </tr><tr>
                 <td>Повторите пароль:</td>
-                <td> <input type="password" name="password2" value="" maxlength="30"> </td>
+                <td> <input type="password" name="password2" value="" maxlength="30" autocomplete="new-password"> </td>
             </tr><tr>
                 <td>E-mail:</td>
                 <td> <input type="email" name="email" value="" autocomplete='email'> </td>
@@ -99,10 +99,10 @@
                 <td> <input type="email" name="email" value="{{ repair_email }}" autocomplete='email'> </td>
             </tr><tr>
                 <td>Новый пароль:</td>
-                <td> <input type="password" name="password" value="" maxlength="30"> </td>
+                <td> <input type="password" name="password" value="" maxlength="30" autocomplete="new-password"> </td>
             </tr><tr>
                 <td>Повторите пароль:</td>
-                <td> <input type="password" name="password2" value="" maxlength="30"> </td>
+                <td> <input type="password" name="password2" value="" maxlength="30" autocomplete="new-password"> </td>
             </tr>
             
             <tr class="captcha">
