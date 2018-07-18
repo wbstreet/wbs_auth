@@ -87,7 +87,7 @@
             </tr>
                 
            <tr>
-                <td colspan="2" style="text-align:left;"> <input type="button" value="Зарегистрироваться" onclick="sendform(sendform(this, 'reg', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')}))"> </td>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Зарегистрироваться" onclick="sendform(this, 'reg', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')))"> </td>
             </tr>
         </table>
     </form>
@@ -111,7 +111,7 @@
             </tr>
             
             <tr>
-                <td colspan="2" style="text-align:left;"> <input type="button" value="Восстановить" onclick="sendform(sendform(this, 'repair', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')}))"> </td>
+                <td colspan="2" style="text-align:left;"> <input type="button" value="Восстановить" onclick="sendform(this, 'repair', {url:WB_URL+'/modules/wbs_auth/api.php', wb_captcha_img:this.closest('form').querySelector('td.captcha img')})"> </td>
             </tr>
         </table>
     </form>
